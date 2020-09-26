@@ -1,0 +1,62 @@
+{
+  "generator-jhipster-multitenancy": {
+    "promptValues": {
+      "packageName": "com.content.app"
+    },
+    "tenantChangelogDate": "20200926204703",
+    "jhipsterVersion": "6.3.1",
+    "applicationType": "monolith",
+    "baseName": "contentApp",
+    "packageName": "com.content.app",
+    "packageFolder": "com/content/app",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "elasticsearch",
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NDIyZDg0YzlkMzg0YmFhMTE5ZWU5NjkwMDAwZDNmNDYxN2QwNTBjMmIxM2Q4NTYyZTE5NjA3M2YzMjc2OWJlNmUwOTY0NTBiOGQ1ZTNjZjJmMzRhMzVkOTNhMDkzYjVjMWRhYTg2ZGQzNmM1MzExODM4MTQzYTJhNmI5NmQ3OWQ=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "react",
+    "clientTheme": "cosmo",
+    "clientThemeVariant": "primary",
+    "tenantName": "Company"
+  },
+  "generator-jhipster": {
+    "promptValues": {
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.3.1",
+    "applicationType": "monolith",
+    "baseName": "contentApp",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-multitenancy",
+        "version": "2.1.2"
+      }
+    ],
+    "enableTranslation": true,
+    "clientPackageManager": "npm",
+    "nativeLanguage": "en",
+    "languages": ["en", "fr"],
+    "blueprints": [
+      {
+        "name": "generator-jhipster-multitenancy",
+        "version": "2.1.2"
+      }
+    ]
+  }
+}

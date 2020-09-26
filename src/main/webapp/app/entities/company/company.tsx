@@ -123,6 +123,9 @@ export class Company extends React.Component<ICompanyProps, ICompanyState> {
                   <th className="hand" onClick={this.sort('id')}>
                     <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
                   </th>
+                  <th className="hand" onClick={this.sort('name')}>
+                    <Translate contentKey="contentApp.company.name">Name</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
                   <th />
                 </tr>
               </thead>
@@ -134,6 +137,7 @@ export class Company extends React.Component<ICompanyProps, ICompanyState> {
                         {company.id}
                       </Button>
                     </td>
+                    <td>{company.name}</td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
                         <Button tag={Link} to={`${match.url}/${company.id}`} color="info" size="sm">

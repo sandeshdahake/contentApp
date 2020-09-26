@@ -214,7 +214,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                       {companies
                         ? companies.map(company => (
                             <option value={company.id} key={company.id}>
-                              {company.id}
+                              {company.name}
                             </option>
                           ))
                         : null}
@@ -225,7 +225,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                       {companies
                         ? companies.map(company => (
                             <option value={company.id} key={company.id}>
-                              {company.id}
+                              {company.name}
                             </option>
                           ))
                         : null}

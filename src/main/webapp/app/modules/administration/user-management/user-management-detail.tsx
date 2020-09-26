@@ -60,7 +60,7 @@ export const UserManagementDetail = (props: IUserManagementDetailProps) => {
           <dt>
             <Translate contentKey="contentApp.company.detail.title">Company</Translate>
           </dt>
-          <dd>{user.company ? user.company.id : null}</dd>
+          <dd>{user.company ? user.company.name : null}</dd>
           <dt>
             <Translate contentKey="userManagement.createdBy">Created By</Translate>
           </dt>

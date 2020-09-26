@@ -40,6 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ContentApp.class)
 public class CompanyResourceIT {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -92,7 +95,8 @@ public class CompanyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Company createEntity(EntityManager em) {
-        Company company = new Company();
+        Company company = new Company()
+            .name(DEFAULT_NAME);
         return company;
     }
     /**
@@ -102,7 +106,8 @@ public class CompanyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Company createUpdatedEntity(EntityManager em) {
-        Company company = new Company();
+        Company company = new Company()
+            .name(UPDATED_NAME);
         return company;
     }
 
@@ -126,6 +131,7 @@ public class CompanyResourceIT {
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeCreate + 1);
         Company testCompany = companyList.get(companyList.size() - 1);
+        assertThat(testCompany.getName()).isEqualTo(DEFAULT_NAME);
 
         // Validate the Company in Elasticsearch
         verify(mockCompanySearchRepository, times(1)).save(testCompany);
@@ -156,6 +162,24 @@ public class CompanyResourceIT {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyRepository.findAll().size();
+        // set the field null
+        company.setName(null);
+
+        // Create the Company, which fails.
+
+        restCompanyMockMvc.perform(post("/api/companies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(company)))
+            .andExpect(status().isBadRequest());
+
+        List<Company> companyList = companyRepository.findAll();
+        assertThat(companyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCompanies() throws Exception {
         // Initialize the database
         companyRepository.saveAndFlush(company);
@@ -164,7 +188,8 @@ public class CompanyResourceIT {
         restCompanyMockMvc.perform(get("/api/companies?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
     
     @Test
@@ -177,7 +202,8 @@ public class CompanyResourceIT {
         restCompanyMockMvc.perform(get("/api/companies/{id}", company.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(company.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(company.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
     @Test
@@ -202,6 +228,8 @@ public class CompanyResourceIT {
         Company updatedCompany = companyRepository.findById(company.getId()).get();
         // Disconnect from session so that the updates on updatedCompany are not directly saved in db
         em.detach(updatedCompany);
+        updatedCompany
+            .name(UPDATED_NAME);
 
         restCompanyMockMvc.perform(put("/api/companies")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -212,6 +240,7 @@ public class CompanyResourceIT {
         List<Company> companyList = companyRepository.findAll();
         assertThat(companyList).hasSize(databaseSizeBeforeUpdate);
         Company testCompany = companyList.get(companyList.size() - 1);
+        assertThat(testCompany.getName()).isEqualTo(UPDATED_NAME);
 
         // Validate the Company in Elasticsearch
         verify(mockCompanySearchRepository, times(1)).save(testCompany);
@@ -270,7 +299,8 @@ public class CompanyResourceIT {
         restCompanyMockMvc.perform(get("/api/_search/companies?query=id:" + company.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(company.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @Test

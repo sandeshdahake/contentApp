@@ -2,7 +2,16 @@
     "fluentMethods": true,
     "clientRootFolder": "",
     "relationships": [],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "unique"
+            ]
+        }
+    ],
     "changelogDate": "20200926204703",
     "dto": "no",
     "searchEngine": "elasticsearch",
